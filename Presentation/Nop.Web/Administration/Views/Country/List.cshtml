@@ -1,0 +1,81 @@
+﻿@model Telerik.Web.Mvc.GridModel<CountryModel>
+@using Telerik.Web.Mvc.UI
+@{
+    //page title
+    ViewBag.Title = T("Admin.Configuration.Countries").Text;
+}
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Administration/Content/images/ico-configuration.png")" alt="" />
+        @T("Admin.Configuration.Countries")
+    </div>
+    <div class="options">
+        <a href="@Url.Action("Create")" class="t-button">@T("Admin.Common.AddNew")</a>
+    </div>
+</div>
+<table class="adminContent">
+    <tr>
+        <td>
+            @(Html.Telerik().Grid<CountryModel>()
+                    .Name("countries-grid")
+                    .BindTo(Model.Data)
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.Name)
+                            .Width(150)
+                            .Centered();
+                        columns.Bound(x => x.AllowsBilling)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.AllowsBilling.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= AllowsBilling #>.gif' />")
+                            .Centered()
+                            .Width(100);
+                        columns.Bound(x => x.AllowsShipping)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.AllowsShipping.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= AllowsShipping #>.gif' />")
+                            .Centered()
+                            .Width(100);
+                        columns.Bound(x => x.TwoLetterIsoCode)
+                            .Width(50)
+                            .Centered();
+                        columns.Bound(x => x.ThreeLetterIsoCode)
+                            .Width(50)
+                            .Centered();
+                        columns.Bound(x => x.NumericIsoCode)
+                            .Width(50)
+                            .Centered();
+                        columns.Bound(x => x.SubjectToVat)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.SubjectToVat.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= SubjectToVat #>.gif' />")
+                            .Centered()
+                            .Width(100);
+                        columns.Bound(x => x.NumberOfStates)
+                            .Width(50)
+                            .Centered();
+                        columns.Bound(x => x.DisplayOrder)
+                            .Width(50)
+                            .Centered();
+                        columns.Bound(x => x.Published)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.Published.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= Published #>.gif' />")
+                            .Centered()
+                            .Width(100);
+                        columns.Bound(x => x.Id)
+                            .Template(x => Html.ActionLink(T("Admin.Common.Edit").Text, "Edit", new { id = x.Id }))
+                            .ClientTemplate("<a href=\"Edit/<#= Id #>\">" + T("Admin.Common.Edit").Text + "</a>")
+                            .Width(50)
+                            .Centered()
+                            .HeaderTemplate(T("Admin.Common.Edit").Text);
+                    })
+                    .DataBinding(dataBinding => dataBinding.Ajax().Select("CountryList", "Country"))
+                    .EnableCustomBinding(true))
+        </td>
+    </tr>
+</table>

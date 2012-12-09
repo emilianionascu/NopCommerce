@@ -1,0 +1,41 @@
+﻿@model CategoryNavigationModel
+@using Nop.Web.Models.Catalog;
+@helper RenderCategoryLine(CategoryNavigationModel.CategoryModel category)
+{
+    var categoryPadding = 15;
+    <li class="@(category.Id == Model.CurrentCategoryId ? "active" : "inactive")">
+        <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">@category.Name
+            @if (category.NumberOfProducts.HasValue)
+            {
+                <text> (@(category.NumberOfProducts.Value))</text>
+            }
+        </a>
+        @if (category.SubCategories.Count > 0)
+        {
+            <ul class="sublist">
+                @foreach (var subCategory in category.SubCategories)
+                {
+                    @RenderCategoryLine(subCategory)
+                }
+            </ul>
+        }
+    </li>
+}
+@if (Model.Categories.Count > 0)
+{
+    <div class="block block-category-navigation">
+        <div class="title">
+            <strong>@T("Categories")</strong>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="listbox">
+            <ul>
+                @foreach (var category in Model.Categories)
+                {
+                    @RenderCategoryLine(category)
+                }
+            </ul>
+        </div>
+    </div>
+}

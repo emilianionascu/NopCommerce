@@ -1,0 +1,65 @@
+﻿@model Telerik.Web.Mvc.GridModel<CustomerRoleModel>
+@using Telerik.Web.Mvc.UI
+@{
+    //page title
+    ViewBag.Title = T("Admin.Customers.CustomerRoles").Text;
+}
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Administration/Content/images/ico-customers.png")" alt="" />
+        @T("Admin.Customers.CustomerRoles")
+    </div>
+    <div class="options">
+        <a href="@Url.Action("Create")" class="t-button">@T("Admin.Common.AddNew")</a>
+    </div>
+</div>
+<table class="adminContent">
+    <tr>
+        <td>
+            @(Html.Telerik().Grid<CustomerRoleModel>()
+                    .Name("customerroles-grid")
+                    .BindTo(Model.Data)
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.Name).Width(150);
+                        columns.Bound(x => x.FreeShipping)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.FreeShipping.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= FreeShipping #>.gif' />")
+                            .Centered()
+                            .Width(100);
+                        columns.Bound(x => x.TaxExempt)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.TaxExempt.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= TaxExempt #>.gif' />")
+                            .Centered()
+                            .Width(100);
+                        columns.Bound(x => x.Active)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.Active.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= Active #>.gif' />")
+                            .Centered()
+                            .Width(100);
+                        columns.Bound(x => x.IsSystemRole)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.IsSystemRole.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= IsSystemRole #>.gif' />")
+                            .Centered()
+                            .Width(100);
+                        columns.Bound(x => x.Id)
+                            .Template(x => Html.ActionLink(T("Admin.Common.Edit").Text, "Edit", new { id = x.Id }))
+                            .ClientTemplate("<a href=\"Edit/<#= Id #>\">" + T("Admin.Common.Edit").Text + "</a>")
+                            .Width(50)
+                            .Centered()
+                            .HeaderTemplate(T("Admin.Common.Edit").Text)
+                            .Filterable(false);
+                    })
+                    .DataBinding(dataBinding => dataBinding.Ajax().Select("List", "CustomerRole"))
+                    .EnableCustomBinding(true))
+        </td>
+    </tr>
+</table>

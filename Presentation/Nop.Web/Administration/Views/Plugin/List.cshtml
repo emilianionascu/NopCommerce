@@ -1,0 +1,103 @@
+﻿@using Telerik.Web.Mvc.UI
+@{    
+    //page title
+    ViewBag.Title = T("Admin.Configuration.Plugins").Text;
+}
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "plugins-form" }))
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-configuration.png")" alt="" />
+            @T("Admin.Configuration.Plugins")
+        </div>
+        <div class="options">
+            <a href="@Url.Action("ReloadList")" class="t-button">@T("Admin.Configuration.Plugins.ReloadList")</a>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#plugins-grid a.install").click(function (e) {
+                showThrobber('@T("Admin.Configuration.Plugins.Fields.Install.Progress")');
+            });
+
+            $("#plugins-grid a.uninstall").click(function (e) {
+                showThrobber('@T("Admin.Configuration.Plugins.Fields.Uninstall.Progress")');
+            });
+        });
+    </script>    
+    <table class="adminContent">
+        <tr>
+            <td>
+                <h4>@T("Admin.Configuration.Plugins.Description"):</h4>
+                <ol>
+                    <li>@T("Admin.Configuration.Plugins.Description.Step1")</li>
+                    <li>@T("Admin.Configuration.Plugins.Description.Step2")</li>
+                    <li>@T("Admin.Configuration.Plugins.Description.Step3")</li>
+                    <li>@T("Admin.Configuration.Plugins.Description.Step4")</li>
+                    <li>@T("Admin.Configuration.Plugins.Description.Step5")</li>
+                </ol>
+                <p>
+                    You can download more nopCommerce plugins on our <a href="http://www.nopcommerce.com/extensions.aspx" target="_blank">extensions directory</a>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<PluginModel>()
+                    .Name("plugins-grid")
+                    .DataKeys(keys =>
+                    {
+                        keys.Add(x => x.SystemName);
+                    })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.Group);
+                        columns.Bound(x => x.FriendlyName)
+                            .ClientTemplate("<b><#= FriendlyName #></b>" +
+                                " <br />" + T("Admin.Configuration.Plugins.Fields.Version").Text + ": <#= Version #>" +
+                                " <br />" + T("Admin.Configuration.Plugins.Fields.Author").Text + ": <#= Author #>" +
+                                " <br />" + T("Admin.Configuration.Plugins.Fields.SystemName").Text + ": <#= SystemName #>" +
+                                " <br />" + T("Admin.Configuration.Plugins.Fields.DisplayOrder").Text + ": <#= DisplayOrder #>" +
+                                " <br />" + "<# if (CanChangeEnabled)  { #>" + T("Admin.Configuration.Plugins.Fields.IsEnabled").Text + ": <img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= IsEnabled #>.gif' />" +
+                                    "<# } #>");
+                        columns.Bound(x => x.Installed)
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= Installed #>.gif' />")
+                            .Centered();
+                        columns.Bound(x => x.SystemName)
+                            .ClientTemplate("<# if (Installed)  { #> <a href=\"" + @Url.Content("~/Admin/Plugin/Uninstall/") + "?systemName=<#= SystemName #>\" class=\"uninstall\">" + T("Admin.Configuration.Plugins.Fields.Uninstall").Text + "</a> <# } else { #> <a href=\"" + @Url.Content("~/Admin/Plugin/Install/") + "?systemName=<#= SystemName #>\" class=\"install\">" + T("Admin.Configuration.Plugins.Fields.Install").Text + "</a> <# } #>")
+                            .Centered()
+                            .HeaderTemplate(T("Admin.Configuration.Plugins.Fields.Installation").Text);
+                        columns.Bound(x => x.ConfigurationUrl)
+                            //allow configuration only when a plugin has a configuration URL specified
+                            .ClientTemplate("<# if (ConfigurationUrl && ConfigurationUrl.length > 0)  { #> <a href=\"<#= ConfigurationUrl #>\">" + T("Admin.Configuration.Plugins.Fields.Configure").Text + "</a> <# } else { #>  <# } #>")
+                            .Centered();
+                        columns.Bound(x => x.SystemName)
+                            .Centered()
+                            .ClientTemplate("<a href=\"" + "javascript:OpenWindow('" + @Url.Content("~/Admin/Plugin/EditPopup") + "?systemName=<#= SystemName #>&btnId=btnRefresh&formId=plugins-form', 800, 250, true);\" >" + T("Admin.Common.Edit").Text + "</a>")
+                            .Title(T("Admin.Common.Edit").Text);
+                    })
+                    .DataBinding(dataBinding =>
+                        dataBinding.Ajax()
+                        .Select("ListSelect", "Plugin")
+                    ))
+            </td>
+        </tr>
+        <tr>
+            <td width="100%">
+                <input type="submit" id="btnRefresh" name="btnRefresh" style="display: none" />
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $('#btnRefresh').click(function () {
+                            //refresh grid
+                            var optionsGrid = $("#plugins-grid");
+                            optionsGrid.data('tGrid').ajaxRequest();
+
+                            //return false to don't reload a page
+                            return false;
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+}

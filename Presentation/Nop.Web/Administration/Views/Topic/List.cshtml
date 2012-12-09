@@ -1,0 +1,50 @@
+﻿@model Telerik.Web.Mvc.GridModel<TopicModel>
+@using Telerik.Web.Mvc.UI
+@{    
+    //page title
+    ViewBag.Title = T("Admin.ContentManagement.Topics").Text;
+}
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Administration/Content/images/ico-content.png")" alt="" />
+        @T("Admin.ContentManagement.Topics")
+    </div>
+    <div class="options">
+        <a href="@Url.Action("Create")" class="t-button">@T("Admin.Common.AddNew")</a>
+    </div>
+</div>
+<table class="adminContent">
+    <tr>
+        <td>
+            @(Html.Telerik().Grid<TopicModel>(Model.Data)
+                    .Name("topics-grid")
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.SystemName)
+                            .Width(200);
+                        columns.Bound(x => x.IsPasswordProtected)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.IsPasswordProtected.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= IsPasswordProtected #>.gif' />")
+                            .Centered()
+                            .Width(100);
+                        columns.Bound(x => x.IncludeInSitemap)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.IncludeInSitemap.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= IncludeInSitemap #>.gif' />")
+                            .Centered()
+                            .Width(100);
+                        columns.Bound(x => x.Id)
+                            .Width(50)
+                            .Centered()
+                            .Template(x => Html.ActionLink(T("Admin.Common.Edit").Text, "Edit", new { id = x.Id }))
+                            .ClientTemplate("<a href=\"Edit/<#= Id #>\">" + T("Admin.Common.Edit").Text + "</a>")
+                            .Title(T("Admin.Common.Edit").Text);
+                    })
+                    .DataBinding(dataBinding => dataBinding.Ajax().Select("List", "Topic"))
+                    .EnableCustomBinding(true))
+        </td>
+    </tr>
+</table>
