@@ -111,7 +111,7 @@
     </PropertyGroup>
         <FtpUploadDirectoryContent
     ServerHost="$(ftpHost)"
-        Port="41"
+        Port="21"
         Username="$(ftpUser)"
         Password="$(ftpPass)"
         LocalDirectory="$(OutputPath)"
