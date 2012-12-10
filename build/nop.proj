@@ -103,7 +103,6 @@
 	<!--Transform root web.config file-->
 	<TransformXml Condition="Exists('$(WebFolder)\Web.$(Configuration).config')" Source="$(WebFolder)\Web.config" Transform="$(WebFolder)\Web.$(Configuration).config" Destination="$(DeployFolder)\$(DeployPrefix)\Web.config" />
     </Target>
-	<Import Project="$(MSBuildExtensionsPath32)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
 	<Target Name="AfterBuild">    
     <PropertyGroup>
         <ftpHost>ftp://ftp.artscala.ro.cws18.my-hosting-panel.com/</ftpHost>
