@@ -105,7 +105,7 @@
     </Target>
 	<Target Name="AfterBuild">    
     <PropertyGroup>
-        <ftpHost>ftp://ftp.artscala.ro.cws18.my-hosting-panel.com</ftpHost>
+        <ftpHost>ftp.artscala.ro.cws18.my-hosting-panel.com</ftpHost>
         <ftpUser>artscala.ro_ftp</ftpUser>
         <ftpPass>artScala12#</ftpPass>
     </PropertyGroup>
