@@ -1761,6 +1761,7 @@
     <Content Include="Views\ShoppingCart\_OrderReviewData.Mobile.cshtml" />
     <Content Include="Views\Common\StoreClosed.cshtml" />
     <Content Include="Views\Common\StoreClosed.Mobile.cshtml" />
+    <None Include="Properties\PublishProfiles\Local.pubxml" />
     <None Include="Properties\PublishProfiles\MochaHost.pubxml" />
   </ItemGroup>
   <PropertyGroup>

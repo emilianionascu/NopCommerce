@@ -1,0 +1,15 @@
+﻿@using Nop.Core;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Framework;
+@{
+    var supportRtl = EngineContext.Current.Resolve<IWorkContext>().WorkingLanguage.Rtl;
+}
+@if (supportRtl)
+{
+    //this theme supports RTL
+    Html.AppendCssFileParts(Url.Content("~/Themes/00038/Content/styles.rtl.css"));
+}
+else
+{
+    Html.AppendCssFileParts(Url.Content("~/Themes/00038/Content/styles.css"));
+}

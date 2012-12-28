@@ -105,9 +105,9 @@
     </Target>
 	<Target Name="AfterBuild">    
     <PropertyGroup>
-        <ftpHost>ftp.artscala.ro.cws18.my-hosting-panel.com</ftpHost>
-        <ftpUser>artscala.ro_ftp</ftpUser>
-        <ftpPass>artScala12#</ftpPass>
+        <ftpHost>ftp.covoare-bucur-obor.ro.cws18.my-hosting-panel.com</ftpHost>
+        <ftpUser>covoare_ftp</ftpUser>
+        <ftpPass>ppamericanpp12#</ftpPass>
     </PropertyGroup>
         <FtpUploadDirectoryContent
     ServerHost="$(ftpHost)"
